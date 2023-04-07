@@ -22,13 +22,11 @@ function Login() {
             "password": password
         }
 
-        console.log(loginReq);
-
         try{
             let postResult = await fetch(API_URL, {
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json, charset="UTF-8',
                 },
                 method: "POST",
                 body: JSON.stringify(loginReq)
@@ -39,7 +37,7 @@ function Login() {
                 
                 //Dieu huong toi /user-page va truyen props loginUser vao welcomePage
                 //...enter code here
-                
+
                 return setloginUser(loginUser);
             
             } else {
