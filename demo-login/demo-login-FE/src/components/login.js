@@ -33,12 +33,13 @@ function Login() {
                 method: "POST",
                 body: JSON.stringify(loginReq)
             });
-            
             //request success
             if(postResult.status===200) {
                 let loginUser = await postResult.json().data;
                 
                 //Dieu huong toi /user-page va truyen props loginUser vao welcomePage
+                //...enter code here
+                
                 return setloginUser(loginUser);
             
             } else {
@@ -64,7 +65,7 @@ function Login() {
                 value={password}
                 onChange={(e)=>setPassword(e.target.value)}>
             </input>
-            
+
             <div className='submit'>
                 <button type='submit' onClick={postLogin}>Login</button>
             </div>
