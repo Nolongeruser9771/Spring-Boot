@@ -1,5 +1,6 @@
 import React from "react";
 import './welcomePage.css';
+import { Link } from "react-router-dom";
 
 function WelcomePage({loginUser}) {
     return(
@@ -11,7 +12,7 @@ function WelcomePage({loginUser}) {
                 <li>Avatar: {loginUser.avatar}</li>
             </ul>
             <div className="logout">
-                <button>Logout</button>
+                <Link to="/login"><button>Logout</button></Link>
             </div>
         </div>
     )
