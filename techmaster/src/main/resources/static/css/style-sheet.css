@@ -1,0 +1,53 @@
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.container {
+    font-weight: bold;
+    padding: 2rem;
+    border: 1px solid rgb(176, 175, 175);
+    border-radius: 1rem;
+}
+.employer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+input {
+    height: 1.5rem;
+    border: 0.5px solid rgb(176, 175, 175);
+    box-shadow: 1px 1px 1px rgb(176, 175, 175);
+    border-radius: 2px;
+}
+.employer-submit-btn {
+    display: flex;
+    gap: 1rem;
+}
+.employer-submit-btn button,a {
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    background-color: rgb(67, 110, 205);
+    color: white;
+}
+.notify {
+    color: darkred;
+    margin-top: 2rem;
+}
+a {
+    text-decoration: none;
+    font-weight: lighter;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.85rem;
+}
+.table {
+    text-align: left;
+    width: 80vw;
+    border-collapse: collapse;
+}
+table, td, th {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border: 1px solid rgb(175, 170, 170);
+}

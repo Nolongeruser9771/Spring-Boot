@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Employer Form</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style-sheet.css}">
+</head>
+<body>
+    <div class="container" style="width: 40vw">
+        <h2>Thông tin nhà tuyển dụng</h2>
+        <form th:action="@{/employer-form}" th:object="${employer}" class="employer-form" method="post">
+            <label name="name">Name:</label>
+            <input name="name" th:field="*{name}" placeholder="Enter employer name">
+
+            <label name="size">Company size:</label>
+            <input name="size" th:field="*{size}" placeholder="Enter company size">
+
+            <label name="phone">Phone Number:</label>
+            <input name="phone" th:field="*{phone}" placeholder="Enter phone number">
+
+            <div class="employer-submit-btn">
+                <button type="submit">Submit</button>
+                <button type="reset">Cancel</button>
+                <a th:href="@{/employer-list}">Display Employer</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="notify">
+        <span th:text="${notify}"></span>
+    </div>
+
+    <script>
+        setTimeout(()=> document.querySelector(".notify").innerHTML="", 3000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Employer List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style-sheet.css}">
+</head>
+<body>
+    <div class="container" style="width: 80vw; border: none;">
+        <h2>List Employer</h2>
+        <a th:href="@{/home}">Home</a>
+        <table style="margin-top: 1rem;" class="table table-bordered">
+            <thead>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>COMPANY SIZE</th>
+            <th>PHONE NUMBER</th>
+            <th>ACTION</th>
+            </thead>
+            <tbody>
+            <tr th:each="employ: ${employers}">
+                <td th:text="${employ.value.id}"></td>
+                <td th:text="${employ.value.name}">SAMSUNG</td>
+                <td th:text="${employ.value.size}">10000</td>
+                <td th:text="${employ.value.phone}">0704690000</td>
+                <td>
+                    <a href="">Edit</a>
+                    <a style="background-color: rgb(210, 72, 72);" href="">Del</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
