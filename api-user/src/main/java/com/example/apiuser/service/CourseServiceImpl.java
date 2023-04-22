@@ -147,8 +147,16 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void deleteCourse(Integer id) {
-        courses.removeIf(course -> course.getId().equals(id));
-        throw new NotFoundException("Not found course id "+id);
+        boolean isExistCourse = false;
+        for (Course course:courses) {
+            if (course.getId().equals(id)) {
+                isExistCourse = true;
+                courses.remove(course);
+                break;
+            }
+        }
+        if (!isExistCourse)
+            throw new NotFoundException("Not found course id "+ id);
     }
 
     @Override

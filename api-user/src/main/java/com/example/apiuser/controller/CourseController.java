@@ -76,6 +76,6 @@ public class CourseController {
     @DeleteMapping("/admin/courses/{id}")
     public ResponseEntity<?> deleteCourse(@PathVariable("id") Integer id) {
         courseService.deleteCourse(id);
-        return ResponseEntity.ok("Delete successfully");
+        return ResponseEntity.ok("Delete course id "+ id+ " successfully");
     }
 }
