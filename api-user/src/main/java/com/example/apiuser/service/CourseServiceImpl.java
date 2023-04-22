@@ -2,6 +2,7 @@ package com.example.apiuser.service;
 
 import com.example.apiuser.entity.Course;
 import com.example.apiuser.entity.User;
+import com.example.apiuser.exception.BadRequestException;
 import com.example.apiuser.exception.NotFoundException;
 import com.example.apiuser.model.CourseDTO;
 import com.example.apiuser.model.CourseDTOMapper;
@@ -152,14 +153,19 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CoursePageDTO getCourseByPage(Integer page, Integer pageSize) {
-        List<CoursePageDTO> coursePageDTOList = pageDivider(pageSize);
+        Integer totalPage = courses.size()%pageSize!=0?
+                (courses.size()/pageSize)+1:
+                (courses.size()/pageSize);
+
+        if (page>totalPage) {
+            throw new BadRequestException("Invalid page request");
+        }
+
+        List<CoursePageDTO> coursePageDTOList = pageDivider(pageSize, totalPage);
         return coursePageDTOList.get(page-1);
     }
 
-    public List<CoursePageDTO> pageDivider(Integer pageSize) {
-        Integer totalPage = courses.size()%pageSize!=0?
-                            (courses.size()/pageSize)+1:
-                            (courses.size()/pageSize);
+    public List<CoursePageDTO> pageDivider(Integer pageSize, Integer totalPage) {
         int n = 0;
 
         List<CoursePageDTO> coursePageList = new ArrayList<>();
