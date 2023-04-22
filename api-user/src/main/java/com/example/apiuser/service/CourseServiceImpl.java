@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -47,7 +48,7 @@ public class CourseServiceImpl implements CourseService {
         if (name!=null) {
             findCourseByName(name, courseList);
         } else {
-            courseList=courses;
+            courseList.addAll(courses);
         }
 
         if (courseList.size()>0 && type!=null) {
@@ -68,23 +69,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     //helper function
-    private List<Course> findCourseByName(String name, List<Course> courseList) {
+    private void findCourseByName(String name, List<Course> courseList) {
         for (Course course:courses) {
-            if (course.getName().equals(name)) {
+            if (course.getName().compareToIgnoreCase(name)==0) {
                 courseList.add(course);
             }
         }
-        return courseList;
     }
 
-    private List<Course> findCourseByType(String type, List<Course> courseList) {
+    private void findCourseByType(String type, List<Course> courseList) {
         courseList.removeIf(course -> !course.getType().equals(type));
-        return courseList;
     }
 
-    private List<Course> findCourseByTopic(String topic, List<Course> courseList) {
+    private void findCourseByTopic(String topic, List<Course> courseList) {
         courseList.removeIf(course -> !course.getTopics().contains(topic));
-        return courseList;
     }
 
     @Override

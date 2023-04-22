@@ -22,7 +22,7 @@ public class CourseController {
     CourseService courseService;
 
     //API USER
-    //1. Xem danh sách tất cả khóa học (type || name || topic required)
+    //1. Xem danh sách tất cả khóa học (type || name || topic not required)
     @GetMapping(value = "/courses")
     public ResponseEntity<?> getAllCourse(@RequestParam(value = "name", required = false) String name,
                                           @RequestParam(value = "type", required = false) @Pattern(regexp = "online|onlab") String type,
@@ -37,7 +37,7 @@ public class CourseController {
         return ResponseEntity.ok(list);
     }
 
-    //2. Xem thông tin của 1 khóa học cụ thể
+    //2. Xem thông tin của 1 khóa học cụ thể (với role user & role admin)
     @GetMapping(value = {"/courses/{id}", "/admin/courses/{id}"})
     public ResponseEntity<?> getCourseById(@PathVariable("id") Integer id) {
         CourseDTO foundedUser = courseService.getCourseById(id);
@@ -74,7 +74,7 @@ public class CourseController {
 
     //5. Xóa khóa học (DELETE /api/v1/admin/courses/{id})
     @DeleteMapping("/admin/courses/{id}")
-    public ResponseEntity<?> deleteMaping(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> deleteCourse(@PathVariable("id") Integer id) {
         courseService.deleteCourse(id);
         return ResponseEntity.ok("Delete successfully");
     }
