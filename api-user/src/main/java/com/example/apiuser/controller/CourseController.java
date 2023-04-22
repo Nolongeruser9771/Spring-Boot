@@ -1,6 +1,7 @@
 package com.example.apiuser.controller;
 
 import com.example.apiuser.model.CourseDTO;
+import com.example.apiuser.model.CoursePageDTO;
 import com.example.apiuser.model.UpsertCourseRequest;
 import com.example.apiuser.service.CourseService;
 import jakarta.validation.Valid;
@@ -45,6 +46,12 @@ public class CourseController {
     //API Admin
     //1. Xem danh sách khóa học (có phân trang)
     //GET /api/v1/admin/courses?page={pageValue}&pageSize={pageSizeValue}
+    @GetMapping("/admin/courses")
+    public ResponseEntity<?> getCourseByPage(@RequestParam(defaultValue = "1", required = false) Integer page,
+                                             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        CoursePageDTO coursePage= courseService.getCourseByPage(page,pageSize);
+        return ResponseEntity.ok(coursePage);
+    }
 
     //2.Tạo khóa học mới (POST /api/v1/admin/courses)
     @PostMapping("/admin/courses")

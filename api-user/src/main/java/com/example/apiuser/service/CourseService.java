@@ -2,6 +2,7 @@ package com.example.apiuser.service;
 
 import com.example.apiuser.entity.User;
 import com.example.apiuser.model.CourseDTO;
+import com.example.apiuser.model.CoursePageDTO;
 import com.example.apiuser.model.UpsertCourseRequest;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +24,6 @@ public interface CourseService {
     CourseDTO updatedCourse(UpsertCourseRequest req, Integer id);
 
     void deleteCourse(Integer id);
+
+    CoursePageDTO getCourseByPage(Integer page, Integer pageSize);
 }

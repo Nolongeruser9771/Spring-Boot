@@ -5,6 +5,7 @@ import com.example.apiuser.entity.User;
 import com.example.apiuser.exception.NotFoundException;
 import com.example.apiuser.model.CourseDTO;
 import com.example.apiuser.model.CourseDTOMapper;
+import com.example.apiuser.model.CoursePageDTO;
 import com.example.apiuser.model.UpsertCourseRequest;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +39,7 @@ public class CourseServiceImpl implements CourseService {
         List<Course> courseList = new ArrayList<>();
         List<CourseDTO> result = new ArrayList<>();
 
-        //hơi cùi, chưa nghĩ ra cách tốt hơn...
+        //chưa nghĩ ra cách tốt hơn...
         if (name==null && type==null && topic==null) {
             return getAll();
         }
@@ -66,7 +67,7 @@ public class CourseServiceImpl implements CourseService {
         return new ArrayList<>();
     }
 
-    //helper function by props
+    //helper function
     private List<Course> findCourseByName(String name, List<Course> courseList) {
         for (Course course:courses) {
             if (course.getName().equals(name)) {
@@ -150,4 +151,46 @@ public class CourseServiceImpl implements CourseService {
         courses.removeIf(course -> course.getId().equals(id));
         throw new NotFoundException("Not found course id "+id);
     }
+
+    @Override
+    public CoursePageDTO getCourseByPage(Integer page, Integer pageSize) {
+        List<CoursePageDTO> coursePageDTOList = pageDivider(pageSize);
+        return coursePageDTOList.get(page-1);
+    }
+
+    public List<CoursePageDTO> pageDivider(Integer pageSize) {
+        Integer totalPage = courses.size()%pageSize!=0?
+                            (courses.size()/pageSize)+1:
+                            (courses.size()/pageSize);
+        int n = 0;
+
+        List<CoursePageDTO> coursePageList = new ArrayList<>();
+        //n=0, totalPage = 3;
+        while (n<=totalPage) {
+            //list page
+            CoursePageDTO coursePageDTO = new CoursePageDTO();
+            coursePageDTO.setCurrentPage(n+1); //page = 1
+            coursePageDTO.setPageSize(pageSize); //pageSize = 2
+            coursePageDTO.setTotalPages(totalPage); //totalPage = 3
+            coursePageDTO.setTotalItems(courses.size()); // totalItems = 5
+
+            //data field
+            List<CourseDTO> courseList = new ArrayList<>();
+            for (int i = 0; i < pageSize; i++) {
+                //out of index :
+                if (courses.size()-(n*pageSize+i) <= 0) {
+                    break;
+                }
+                Course foundedCourse = courses.get(pageSize * n + i); //1 2, 3 4
+                courseList.add(CourseDTOMapper.toCourseDTOMapper(foundedCourse,getUserById(foundedCourse.getUserId())));
+            }
+            coursePageDTO.setData(courseList);
+            coursePageList.add(coursePageDTO);
+            n++;
+        }
+
+        return coursePageList;
+    }
+
+
 }
