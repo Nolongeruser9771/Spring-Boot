@@ -186,9 +186,6 @@ public class CourseServiceImpl implements CourseService {
             coursePageList.add(coursePageDTO);
             n++;
         }
-
         return coursePageList;
     }
-
-
 }
