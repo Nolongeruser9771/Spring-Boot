@@ -123,7 +123,7 @@ public class CourseServiceImpl implements CourseService {
                 req.getTopics(),
                 req.getThumbnail(),
                 req.getUserId());
-
+        courses.add(newCourse);
         return CourseDTOMapper.toCourseDTOMapper(newCourse,getUserById(req.getUserId()));
     }
 
