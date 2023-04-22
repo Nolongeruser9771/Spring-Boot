@@ -109,7 +109,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDTO getCourseById(Integer id) {
         for (Course course: courses) {
-            if (course.getId()==id) {
+            if (course.getId().equals(id)) {
                 return CourseDTOMapper.toCourseDTOMapper(course,getUserById(course.getUserId()));
             }
         }

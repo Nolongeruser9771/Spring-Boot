@@ -2,6 +2,7 @@ package com.example.apiuser.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class UpsertCourseRequest {
 
     @NotNull(message = "Name not null!")
     @NotBlank(message = "Type not blank!")
+    @Pattern(regexp = "online|onlab")
     private String type;
 
     private List<String> topics;
