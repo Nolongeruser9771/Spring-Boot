@@ -25,7 +25,7 @@ public class CourseController {
     //1. Xem danh sách tất cả khóa học (type || name || topic not required)
     @GetMapping(value = "/courses")
     public ResponseEntity<?> getAllCourse(@RequestParam(value = "name", required = false) String name,
-                                          @RequestParam(value = "type", required = false) @Pattern(regexp = "online|onlab") String type,
+                                          @RequestParam(value = "type", required = false) String type,
                                           @RequestParam(value = "topic", required = false) String topic){
         List<CourseDTO> lists = courseService.getListByPara(name,type,topic);
         return ResponseEntity.ok(lists);

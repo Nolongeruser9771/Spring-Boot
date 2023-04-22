@@ -46,6 +46,7 @@ public class CourseServiceImpl implements CourseService {
             return getAll();
         }
 
+        //filter by props
         if (name!=null) {
             findCourseByName(name, courseList);
         } else {
