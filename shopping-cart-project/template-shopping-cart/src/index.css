@@ -37,3 +37,12 @@ button {
     display: none;
 }
 
+/*other*/
+.not-found {
+    text-align: center;
+    font-size: 3rem;
+}
+.not-found > span {
+    font-weight: bolder;
+}
+

@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import ShoppingCart from './components/ShoppingCart'
+import NotFound from './components/NotFound';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <ShoppingCart/>
+    <Routes>
+      <Route path="shopping-cart" element={<ShoppingCart/>}></Route>
+      <Route path="/*" element={<NotFound/>}></Route>
+    </Routes>
     </>
   )
 }
