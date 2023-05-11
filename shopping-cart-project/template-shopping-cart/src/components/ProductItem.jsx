@@ -1,15 +1,24 @@
-import { useState } from "react";
-import ProductList from "./ProductList";
+import { useEffect, useState } from "react";
 const URL = "http://localhost:8080/api/v1/cartItems";
 
-export default function ProductItem({ item, deleteHandle, increaseAmount, decreaseAmount}) {
-    const[cartItem, setCartItem] = useState(item);
+export default function ProductItem({ item, deleteHandle, increaseAmount, decreaseAmount }) {
+    const [thumbnailURL, setThumbnailURL] = useState();
+
+    useEffect(() => {
+        const fetchThumbnail = async () => {
+            const res = await fetch("http://localhost:8080/api/v1/thumbnail/" + item.id);
+            const imageBlob = await res.blob();
+            const imageURL = window.URL.createObjectURL(imageBlob);
+            setThumbnailURL(imageURL);
+        };
+        fetchThumbnail();
+    },[item])
 
     return (
         <>
             <div className="product-item d-flex border mb-4">
                 <div className="image">
-                    <img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fGNsb3RoZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" alt="sản phẩm 1" />
+                    <img src={thumbnailURL} alt="sản phẩm 1" />
                 </div>
                 <div className="info d-flex flex-column justify-content-between px-4 py-3 flex-grow-1">
                     <div>
