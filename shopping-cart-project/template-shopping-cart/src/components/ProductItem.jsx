@@ -24,7 +24,7 @@ export default function ProductItem({ item, deleteHandle, increaseAmount, decrea
                     <div>
                         <div className="d-flex justify-content-between align-items-center">
                             <h2 className="text-dark fs-5 fw-normal">
-                                {item.course.name} VND
+                                {item.course.name}
                             </h2>
                             <h2 className="text-danger fs-5 fw-normal">
                                 {item.course.price.toLocaleString("en-US")} VND
