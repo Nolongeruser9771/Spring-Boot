@@ -11,6 +11,26 @@ function UserList() {
   const [filterUsers, setFilterUsers] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
+  //display intial data
+  useEffect(() => {
+    //get all users
+    const getAllUsers = async () => {
+      const res = await axios.get(API_URL + "/users/get-all")
+      const data = await res.data;
+      userList = data;
+      setTotalUsers(data.length);
+    }
+    getAllUsers();
+
+    //display user page 1
+    const getUsersByPage = async () => {
+      const res = await fetch(API_URL + `/users?page1&size=4&sort=id,asc`)
+      const data = await res.json();
+      setFilterUsers(data);
+    }
+    getUsersByPage()
+  }, [])
+
   //data after search
   const filterUser = async () => {
     if (searchValue === "") {
@@ -47,22 +67,6 @@ function UserList() {
   }
 
   //Pagination
-  useEffect(() => {
-    const getAllUsers = async () => {
-      const res = await axios.get(API_URL + "/users/get-all")
-      const data = await res.data.length;
-      console.log(data)
-      setTotalUsers(data);
-    }
-    const getUsersByPage = async () => {
-      const res = await fetch(API_URL + `/users?page1&size=4&sort=id,asc`)
-      const data = await res.json();
-      setFilterUsers(data);
-    }
-    getAllUsers();
-    getUsersByPage()
-  }, [])
-
   const fetchPage = async (currentPage) => {
     const res = await fetch(API_URL + `/users?page=${currentPage}&size=4&sort=id,asc`)
     const data = await res.json();
