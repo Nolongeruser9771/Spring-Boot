@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 userRequest.email(),
                 userRequest.phone(),
                 userRequest.address(),
-                userRequest.avatar(),
+                userRequest.avatar()!=null? userRequest.avatar(): "default-avatar.jpg",
                 userRequest.password());
         userRepository.save(newUser);
         return UserMapper.toUserDTO(newUser);
