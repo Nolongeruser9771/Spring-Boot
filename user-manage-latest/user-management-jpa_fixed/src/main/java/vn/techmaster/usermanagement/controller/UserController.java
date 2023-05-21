@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.techmaster.usermanagement.dto.*;
+import vn.techmaster.usermanagement.entity.User;
 import vn.techmaster.usermanagement.service.UserService;
 
 import java.util.List;
@@ -19,13 +20,6 @@ public class UserController {
     @GetMapping("/get-all")
     public ResponseEntity<?> getAllUsers(){
         List<UserDTO> userList = userService.findAll();
-        return ResponseEntity.ok().body(userList);
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<?> getUsersByNameOrEmailContains(@RequestParam(value = "name", required = false) String name,
-                                                   @RequestParam(value = "email", required = false) String email){
-        List<UserDTO> userList = userService.findByNameContainsOrEmailContains(name, email);
         return ResponseEntity.ok().body(userList);
     }
 
@@ -62,9 +56,10 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<?> findPageByPara(@RequestParam(value = "page", defaultValue = "0") Integer pageNo,
                                             @RequestParam(value = "size", defaultValue = "4") Integer pageSize,
-                                            @RequestParam(value = "sort", required = false) String sortField1,
+                                            @RequestParam(value = "search", required = false) String search,
+                                            @RequestParam(value = "sort", defaultValue = "id,asc") String sortField1,
                                             @RequestParam(value = "sort", required = false) String sortField2) {
-        List<UserDTO> page = userService.pageDivideByPara(pageNo,pageSize,sortField1,sortField2);
+        Page<UserDTO> page = userService.pageDivideByPara(pageNo,pageSize,search,sortField1,sortField2);
         return ResponseEntity.ok().body(page);
     }
 

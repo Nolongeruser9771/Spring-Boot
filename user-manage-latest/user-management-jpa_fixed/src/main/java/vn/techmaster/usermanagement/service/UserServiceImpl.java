@@ -33,23 +33,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream().map(UserMapper::toUserDTO).toList();
     }
 
-    //Using Predicates
-    @Override
-    public List<UserDTO> findByNameContainsOrEmailContains(String name, String email) {
-        List<User> users = userRepository.findAll();
-
-        Predicate<User> filterByName = (user4Name) ->  name == null
-                || name.isEmpty()
-                ||(user4Name.getName().toLowerCase().contains(name.toLowerCase()));
-
-        Predicate<User> filterByEmail = (user4Email) -> email == null
-                || email.isEmpty()
-                || (user4Email.getEmail().toLowerCase().contains(email.toLowerCase()));
-
-        List<User> filterByPara = users.stream().filter(filterByName.and(filterByEmail)).toList();
-        return filterByPara.stream().map(UserMapper::toUserDTO).toList();
-    }
-
     @Override
     public UserDTO findUserById(Integer id) {
         if (userRepository.findUserById(id)==null) {
@@ -141,32 +124,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> pageDivideByPara(Integer pageNo, Integer pageSize, String sortField1, String sortField2) {
-        //Default: sortBy(id,asc)
-
-        if (sortField1==null || sortField2==null) {
-            return userRepository
-                    .findAll(PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "id")))
-                    .getContent()
-                    .stream().map(UserMapper::toUserDTO).toList();
-        }
-        //sortField1 || sortField2 != null => split to get Direction + properties => add to sort List;
-        List<Sort.Order> sorts = new ArrayList<>();
+    public Page<UserDTO> pageDivideByPara(Integer pageNo, Integer pageSize, String searchValue, String sortField1, String sortField2) {
+        //split to get Direction + properties => add to sort List;
         List<String> sortFields = new ArrayList<>(Arrays.asList(sortField1, sortField2));
+        List<Sort.Order> sorts = findSortList(sortFields);
 
+        return userRepository.findAllByNameContainsOrEmailContains(searchValue, searchValue,PageRequest.of(pageNo, pageSize, Sort.by(sorts)));
+    }
+
+    //find sort properties and direction
+    private List<Sort.Order> findSortList(List<String> sortFields) {
+        List<Sort.Order> sorts = new ArrayList<>();
         for (String sortField: sortFields){
             String field = sortField.split(",")[0];
             String order = sortField.split(",")[1];
 
             if(order.equalsIgnoreCase("desc")){
-               sorts.add(new Sort.Order(Sort.Direction.DESC, field));
-               break;
+                sorts.add(new Sort.Order(Sort.Direction.DESC, field));
+                break;
             }
             sorts.add(new Sort.Order(Sort.Direction.ASC, field));
         }
-        return userRepository
-                .findAll(PageRequest.of(pageNo, pageSize, Sort.by(sorts)))
-                .getContent()
-                .stream().map(UserMapper::toUserDTO).toList();
+        return sorts;
     }
+
+
 }

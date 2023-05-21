@@ -14,7 +14,7 @@ import java.util.List;
 public interface UserService {
     List<UserDTO> findAll();
 
-    List<UserDTO> findByNameContainsOrEmailContains(String name, String email);
+//    List<User> findByNameContainsOrEmailContains(String name, String email);
 
     UserDTO findUserById(Integer id);
 
@@ -31,5 +31,5 @@ public interface UserService {
     @Transactional
     public void testTransaction();
 
-    List<UserDTO> pageDivideByPara(Integer pageNo, Integer pageSize, String sortField1, String sortField2);
+    Page<UserDTO> pageDivideByPara(Integer pageNo, Integer pageSize, String searchValue, String sortField1, String sortField2);
 }

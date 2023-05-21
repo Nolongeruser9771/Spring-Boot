@@ -7,50 +7,25 @@ const API_URL = "http://localhost:8080"
 let userList = [];
 
 function UserList() {
-  const [totalUser, setTotalUsers] = useState();
+  const [totalPages, setTotalPages] = useState();
   const [filterUsers, setFilterUsers] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [messageDisplay, setMessageDisplay] = useState("none");
 
   //display intial data
   useEffect(() => {
-    //get all users
-    const getAllUsers = async () => {
-      const res = await axios.get(API_URL + "/users/get-all")
-      const data = await res.data;
-      userList = data;
-      setTotalUsers(data.length);
-    }
-    getAllUsers();
-
     //display user page 1
     const getUsersByPage = async () => {
-      const res = await fetch(API_URL + `/users?page1&size=4&sort=id,asc`)
-      const data = await res.json();
-      setFilterUsers(data);
+      const res = await axios.get(API_URL + `/users?page=&size=&search=&sort=id,asc`)
+      const data = await res.data;
+      console.log(data)
+
+      setTotalPages(data.totalPages)
+      setFilterUsers(data.content);
     }
     getUsersByPage()
   }, [])
-
-  //data after search
-  const filterUser = async () => {
-    if (searchValue === "") {
-      setFilterUsers(userList);
-      return;
-    }
-    try {
-      const res = await fetch(API_URL + `/users/search?name=${searchValue}&email=`);
-      const filterList = await res.json();
-      setFilterUsers(filterList);
-
-      if (filterList.length == 0) {
-        const result = await fetch(API_URL + `/users/search?name=&email=${searchValue}`);
-        const doubleFilter = await result.json();
-        setFilterUsers(doubleFilter);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const deleteUser = async (id) => {
     try {
@@ -67,21 +42,34 @@ function UserList() {
   }
 
   //Pagination
-  const fetchPage = async (currentPage) => {
-    const res = await fetch(API_URL + `/users?page=${currentPage}&size=4&sort=id,asc`)
-    const data = await res.json();
+
+  //Paginate for sort list searched by name or email (After press "Enter")
+  const fetchPage = async (currentPage, searchValue) => {
+    const res = await axios.get(API_URL + `/users?page=${currentPage}&size=4&search=${searchValue}&sort=id,asc`)
+    const data = await res.data;
+    console.log(searchValue)
     console.log(data)
-    return data;
+
+    setTotalPages(data.totalPages)
+    setFilterUsers(data.content)
+
+    //"No user found" message
+    setMessageDisplay(data.totalElements === 0 ? "block" : "none");
+    return data.content;
   }
 
   const handlePageClick = async (page) => {
     let currentPage = page.selected;
     console.log(page.selected)
 
-    const pageLoad = await fetchPage(currentPage);
+    const pageLoad = await fetchPage(currentPage, searchValue);
 
     setFilterUsers(pageLoad);
   }
+
+  useEffect(() => {
+    fetchPage(0, searchValue)
+  }, [searchValue])
 
   return (
     <>
@@ -97,8 +85,8 @@ function UserList() {
                 id="search"
                 className="form-control w-50"
                 placeholder="Search user by name or email"
-                onKeyDown={e => e.key === "Enter" ? filterUser() : null}
-                onChange={e => setSearchValue(e.target.value)}
+                onChange={e => setSearchInput(e.target.value)}
+                onKeyDown={e => e.key === "Enter" ? setSearchValue(searchInput) : null}
               />
             </div>
 
@@ -132,7 +120,7 @@ function UserList() {
                 </tbody>
               </table>
 
-              <p className="message d-none"></p>
+              <p style={{ display: messageDisplay }} className="message">No User founded</p>
             </div>
           </div>
         </div>
@@ -142,7 +130,7 @@ function UserList() {
         previousLabel={'Previous'}
         nextLabel={'Next'}
         breakLabel={'...'}
-        pageCount={totalUser == 0 ? 1 : (totalUser / 4)}
+        pageCount={totalPages}
         marginPagesDisplayed={3}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}
