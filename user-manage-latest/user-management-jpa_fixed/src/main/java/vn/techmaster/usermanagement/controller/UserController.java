@@ -57,8 +57,8 @@ public class UserController {
     public ResponseEntity<?> findPageByPara(@RequestParam(value = "page", defaultValue = "0") Integer pageNo,
                                             @RequestParam(value = "size", defaultValue = "4") Integer pageSize,
                                             @RequestParam(value = "search", required = false) String search,
-                                            @RequestParam(value = "sort", defaultValue = "id,asc") String sortField1,
-                                            @RequestParam(value = "sort", required = false) String sortField2) {
+                                            @RequestParam(value = "sort", defaultValue = "id,asc", required = false) String sortField1,
+                                            @RequestParam(value = "sort", defaultValue = "id,asc", required = false) String sortField2) {
         Page<UserDTO> page = userService.pageDivideByPara(pageNo,pageSize,search,sortField1,sortField2);
         return ResponseEntity.ok().body(page);
     }

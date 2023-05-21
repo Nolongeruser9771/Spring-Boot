@@ -17,7 +17,7 @@ function UserList() {
   useEffect(() => {
     //display user page 1
     const getUsersByPage = async () => {
-      const res = await axios.get(API_URL + `/users?page=&size=&search=&sort=id,asc`)
+      const res = await axios.get(API_URL + `/users?page=&size=&search=&sort=`)
       const data = await res.data;
       console.log(data)
 
@@ -45,7 +45,7 @@ function UserList() {
 
   //Paginate for sort list searched by name or email (After press "Enter")
   const fetchPage = async (currentPage, searchValue) => {
-    const res = await axios.get(API_URL + `/users?page=${currentPage}&size=4&search=${searchValue}&sort=id,asc`)
+    const res = await axios.get(API_URL + `/users?page=${currentPage}&size=&search=${searchValue}&sort=`)
     const data = await res.data;
     console.log(searchValue)
     console.log(data)
