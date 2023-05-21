@@ -141,12 +141,10 @@ public class UserServiceImpl implements UserService {
 
             if(order.equalsIgnoreCase("desc")){
                 sorts.add(new Sort.Order(Sort.Direction.DESC, field));
-                break;
+            } else {
+                sorts.add(new Sort.Order(Sort.Direction.ASC, field));
             }
-            sorts.add(new Sort.Order(Sort.Direction.ASC, field));
         }
         return sorts;
     }
-
-
 }
