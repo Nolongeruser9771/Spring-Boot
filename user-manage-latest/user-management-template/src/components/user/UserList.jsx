@@ -111,8 +111,9 @@ function UserList() {
                       <td>{user.email}</td>
                       <td>{user.phone}</td>
                       <td>{user.address}</td>
-                      <td>
+                      <td width={220}>
                         <Link to={"/users/" + user.id} className="btn btn-success">Detail</Link>
+                        <Link to={`/users/update/${user.id}`}><button className="btn btn-success">Update</button></Link>
                         <button className="btn btn-danger" onClick={() => deleteUser(user.id)}>Delete</button>
                       </td>
                     </tr>

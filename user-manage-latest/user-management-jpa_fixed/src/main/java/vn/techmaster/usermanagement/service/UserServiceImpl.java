@@ -67,7 +67,8 @@ public class UserServiceImpl implements UserService {
         }
         user2update.setName(userRequest.name());
         user2update.setEmail(userRequest.email());
-        user2update.setPhone(userRequest.phone()!=null? userRequest.phone(): user2update.getPhone());
+        user2update.setAddress(!userRequest.address().isBlank()? userRequest.address():user2update.getAddress());
+        user2update.setPhone(!userRequest.phone().isBlank()? userRequest.phone(): user2update.getPhone());
         userRepository.save(user2update);
         return UserMapper.toUserDTO(user2update);
     }

@@ -54,11 +54,11 @@ function UserCreate() {
   const onSubmit = async data => {
     // TODO: write code to submit form. Ex: axios.post(API_URL, data)
     try {
-      let result = await axios.post(API_URL+"/create-user", data);
+      let result = await axios.post(API_URL + "/create-user", data);
       console.log(result);
       alert("User created successfully!")
       //back to userList view
-      setTimeout(()=> {
+      setTimeout(() => {
         // navigate("/users"), 1000
         navigate(`/users/${result.data.id}`), 1000
       })
@@ -141,6 +141,18 @@ function UserCreate() {
 
                   />
                   <p className="text-danger">{errors.password?.message}</p>
+                </div>
+                <div className="mb-3">
+                  <label className="col-form-label">Avatar</label>
+                  <input
+                    type="file"
+                    id="avatar"
+                    className="form-control"
+                    {...register("file")}
+                  // TODO: sử dụng register để đăng kí thuộc tính để theo dõi trong form
+
+                  />
+                  <p className="text-danger">{errors.avatar?.message}</p>
                 </div>
               </div>
               <div className="text-center mt-3">

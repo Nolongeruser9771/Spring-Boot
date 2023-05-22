@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 const API_URL = "http://localhost:8080"
 
 export default function UserDetail() {
@@ -82,11 +82,13 @@ export default function UserDetail() {
                                                 <h6 className="text-muted f-w-400">{user.address}</h6>
                                             </div>
                                         </div>
-                                        <ul className="social-link list-unstyled m-t-40 m-b-10">
-                                            <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="facebook" data-abc="true"><i className="mdi mdi-facebook feather icon-facebook facebook" aria-hidden="true"></i></a></li>
-                                            <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="twitter" data-abc="true"><i className="mdi mdi-twitter feather icon-twitter twitter" aria-hidden="true"></i></a></li>
-                                            <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="instagram" data-abc="true"><i className="mdi mdi-instagram feather icon-instagram instagram" aria-hidden="true"></i></a></li>
-                                        </ul>
+                                        <div className="row">
+                                            <div className="col-sm-6">
+                                            </div>
+                                            <div className="col-sm-6">
+                                              <Link to="/users"><div className="back-btn">&laquo;</div></Link>
+                                            </div>  
+                                        </div>
                                     </div>
                                 </div>
                             </div>
