@@ -9,7 +9,6 @@ import * as yup from 'yup'
 const API_URL = "http://localhost:8080/users"; // TODO:change to user api url
 function UserUpdate() {
     const [addressList, setAddressList] = useState([]);
-    const [user, setUser] = useState();
     const navigate = useNavigate();
     const { userId } = useParams();
 
@@ -19,9 +18,11 @@ function UserUpdate() {
         const getUserInfo = async () => {
             try {
                 const res = await axios.get(API_URL + `/${userId}`);
-                const thisUser = await res.data;
-                console.log(thisUser);
-                setUser(thisUser);
+                const user = await res.data;
+                setValue("name", user?.name)
+                setValue("email", user?.email)
+                setValue("phone", user?.phone)
+                setValue("address", user?.address)
             } catch (error) {
                 console.log(error)
             }
@@ -52,7 +53,7 @@ function UserUpdate() {
         address: yup.string()
     }).required();
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
         //truyền schema vào
         resolver: yupResolver(schema),
         mode: "all"
@@ -88,7 +89,6 @@ function UserUpdate() {
                                 <div className="mb-3">
                                     <label className="col-form-label">Name</label>
                                     <input
-                                        defaultValue={user?.name}
                                         type="text"
                                         id="name"
                                         className="form-control"
@@ -99,7 +99,6 @@ function UserUpdate() {
                                 <div className="mb-3">
                                     <label className="col-form-label">Email</label>
                                     <input
-                                        defaultValue={user?.email}
                                         type="text"
                                         id="email"
                                         className="form-control"
@@ -112,7 +111,6 @@ function UserUpdate() {
                                 <div className="mb-3">
                                     <label className="col-form-label">Phone</label>
                                     <input
-                                        defaultValue={user?.phone}
                                         type="text"
                                         id="phone"
                                         className="form-control"
@@ -125,7 +123,6 @@ function UserUpdate() {
                                 <div className="mb-3">
                                     <label className="col-form-label">Address</label>
                                     <select
-                                        defaultValue={user?.address}
                                         className="form-select"
                                         id="address"
                                         {...register("address")}
