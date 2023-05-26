@@ -14,7 +14,7 @@ public class WalletServiceImpl implements WalletService{
     private WalletRepository walletRepository;
 
     @Override
-    public List<Wallet> findWalletbyBalance(Double balance) {
+    public List<Wallet> findWalletByBalance(Double balance) {
         List<Wallet> wallet = walletRepository.findByBalance(balance);
         if (wallet.size()==0) {
             throw new NotFoundException("Not found Balance = "+ balance);

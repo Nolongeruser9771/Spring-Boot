@@ -17,6 +17,6 @@ public class WalletController {
     //Viết api hiển thị wallet theo số dư
     @GetMapping("/filter-by-balance")
     public ResponseEntity<?> findWalletByBalance(@RequestParam double balance){
-        return ResponseEntity.ok().body(walletService.findWalletbyBalance(balance));
+        return ResponseEntity.ok().body(walletService.findWalletByBalance(balance));
     }
 }
