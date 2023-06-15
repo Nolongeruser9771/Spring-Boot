@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <title>File List</title>
 </head>
 
@@ -14,12 +14,10 @@
 
 <div class="container">
     <h1>Danh sách files</h1>
-    <form th:action="@{'/api/v1/users/' +${userId}+ '/files'}" enctype="multipart/form-data" method="post">
-        <div class="form-group">
-            <input type="file" name="fileUpload" accept="image/*" class="form-control-file">
-        </div>
-        <button type="submit" class="btn upload-btn">Upload File</button>
-    </form>
+
+    <input hidden="hidden" id="input-file" type="file" accept="image/*">
+    <label for="input-file" class="btn upload-btn">Upload File</label>
+
     <table class="table">
         <thead>
         <tr>
@@ -31,19 +29,92 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="file,index : ${files}">
-            <th scope="row" th:text="${index.index +1}"></th>
+        <tr th:each="file : ${files}" th:id="|file-${file.id}|">
+            <th scope="row" th:text="${file.id}"></th>
             <td th:text="${file.type}"></td>
-            <td th:text="${file.createdAt}"></td>
-            <td><a th:href="@{'/api/v1/files/' + ${file.id}}">Xem chi tiết</a></td>
+            <td th:text="${#temporals.format(file.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+            <td><a th:href="@{'/api/v1/files/' + ${file.id}}" target="_blank">Xem chi tiết</a></td>
             <td>
                 <div class="btn delete-btn">
-                    <a class="delete-btn" onclick="if(!(confirm('Sure to delete this file?'))) return false" th:href="@{'/api/v1/files/delete/' + ${file.id}+'?userId='+${userId}}">Delete</a>
-                </div></td>
-            </tr>
+                    <a class="delete-btn" th:onclick="|deleteFile(${file.id})|">Delete</a>
+                </div>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
+<script th:inline="javascript">
+    //Delete File
+    const deleteFile = async (fileId) => {
+        const isConfirm = window.confirm("Sure to delete this file?");
+        try {
+            if (isConfirm) {
+                const deleteFileFetch = await fetch(`http://localhost:8080/api/v1/files/${fileId}`, {method: "DELETE"});
+                if (deleteFileFetch.ok){
+                    const file2delete = document.getElementById(`file-${fileId}`);
+                    console.log(file2delete);
+                    file2delete.parentElement.removeChild(file2delete);
+                    alert("Deleted successfully!");
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    //format Date
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        return date.toLocaleString('vi-VN', options);
+        //sex format lại sau
+    }
+
+    const userId = /*[[${userId}]]*/;
+    console.log(userId);
+
+    //Upload file
+    const input = document.getElementById("input-file");
+    input.addEventListener("change",(event) => {
+        //Lấy file
+        const file = event.target.files[0];
+        console.log(file);
+
+        //Tạo form-data
+        const formData = new FormData();
+        formData.append("fileUpload", file);
+
+        //fetch
+        const fetchFile = async () => {
+            try {
+                const fetchResult = await fetch(`http://localhost:8080/api/v1/users/${userId}/files`, {
+                    method: "POST",
+                    body: formData
+                });
+                const res = await fetchResult.json();
+                console.log(res);
+                const tbody = document.querySelector("tbody");
+                tbody.insertAdjacentHTML("beforeend",`
+                    <tr id="file-${res.id}">
+                        <th>${res.id}</th>
+                        <td>${res.type}</td>
+                        <td>${formatDate(res.createdAt)}</td>
+                        <td><a href="/api/v1/files/${res.id}" target="_blank">Xem chi tiết</a></td>
+                        <td>
+                            <div class="btn delete-btn">
+                                <a class="delete-btn" onClick="deleteFile(${res.id})">Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>`);
+            } catch (e) {
+                console.log(e);
+            }}
+        fetchFile();
+    })
+</script>
 </body>
 
 </html>

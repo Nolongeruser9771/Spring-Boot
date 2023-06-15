@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -26,7 +26,7 @@
         <tr th:each="user, index : ${users}">
             <th scope="row" th:text="${index.index +1}"></th>
             <td th:text="${user.name}"></td>
-            <td><a th:href="@{'/api/v1/users/' + ${user.id} + '/files'}">Xem chi tiết</a></td>
+            <td><a th:href="@{'/users/' + ${user.id} + '/files'}">Xem chi tiết</a></td>
         </tr>
         </tbody>
     </table>

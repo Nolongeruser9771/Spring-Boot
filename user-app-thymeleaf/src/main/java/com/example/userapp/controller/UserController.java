@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Controller
-@RequestMapping("api/v1/users")
+@RequestMapping("")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -24,7 +24,7 @@ public class UserController {
     private FileServerService fileServerService;
 
     //Danh sách users
-    @GetMapping("")
+    @GetMapping("users")
     public String getUsers(Model model) {
         List<User> userList = userService.getAllUsers();
         model.addAttribute("users", userList);
@@ -32,19 +32,11 @@ public class UserController {
     }
 
     //Danh sách files của user
-    @GetMapping("/{id}/files")
+    @GetMapping("users/{id}/files")
     public String getFiles(@PathVariable Integer id, Model model) {
         List<FileServer> filesList = fileServerService.getFilesByUserId(id);
         model.addAttribute("files", filesList);
         model.addAttribute("userId", id);
         return "file_list";
-    }
-
-    //1. *** Upload file ***
-    @PostMapping("{userId}/files")
-    public String uploadFile(@ModelAttribute("fileUpload") MultipartFile fileUpload,
-                             @PathVariable Integer userId) {
-        fileServerService.uploadFile(userId, fileUpload);
-        return "redirect:/api/v1/users/" + userId +"/files";
     }
 }
