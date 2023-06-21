@@ -40,9 +40,11 @@ public class BlogController {
     //3. Lấy chi tiết blog theo blog id
     //GET : admin/blogs/{id}/detail (Trả về Giao diện)
     @GetMapping("admin/blogs/{id}/detail")
-    public ResponseEntity<?> getBlogById(@PathVariable Integer id) {
+    public String getBlogById(@PathVariable Integer id,
+                              Model model) {
         BlogPublic blog = blogService.getBlogDetail(id);
-        return ResponseEntity.ok().body(blog);
+        model.addAttribute("blog", blog);
+        return "admin/blog/blog-detail";
     }
 
     //4. Thêm blog mới
