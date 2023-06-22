@@ -15,10 +15,9 @@ public class CategoryController {
     private CategoryService categoryService;
 
     //1.Lấy ds category (có phân trang, mặc định là pageSize = 10) (Phân trang bên phía client)
-    //GET : admin/categories?page={page}&pageSize={pageSize}
     @GetMapping("api/v1/admin/categories")
     public ResponseEntity<?> getCategoryList(){
-        return ResponseEntity.ok().body(categoryService.getCategoryPage());
+        return ResponseEntity.ok().body(categoryService.getCategoryList());
     }
 
     //2.Thêm category (Lưu ý tên category không được trùng nhau)

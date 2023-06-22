@@ -26,7 +26,7 @@ public class CategoryService {
     private BlogRepository blogRepository;
 
     //Danh sách Category phân trang (chia trang phía front end)
-    public List<CategoryPublic> getCategoryPage(){
+    public List<CategoryPublic> getCategoryList(){
         List<Category>  categoryList = categoryRepository.findAll();
         return categoryList.stream()
                 .map(CategoryPublic::of)

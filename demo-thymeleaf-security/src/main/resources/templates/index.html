@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Home Page</h1>
+
+<th:block sec:authorize="not isAuthenticated()">
+    <form th:action="@{/login}" method="post">
+        <button>Đăng nhập</button>
+    </form>
+</th:block>
+
+<th:block sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="post">
+        <button>Đăng nhập</button>
+    </form>
+</th:block>
+
+<h2>Hello: <span th:text="${#authentication.name}"></span></h2>
+
+<ul>
+    <li sec:authorize = "hasAnyRole('ADMIN','AUTHOR')">
+        <a th:href="@{/profile}">Profile Page</a>
+    </li>
+    <li sec:authorize = "hasAnyRole('ADMIN')">
+        <a th:href="@{/admin}">Admin Page</a>
+    </li>
+    <li sec:authorize = "hasAnyRole('AUTHOR')">
+        <a th:href="@{/author}">Author Page</a>
+    </li>
+</ul>
+
+</body>
+</html>
