@@ -50,7 +50,7 @@ public class BlogController {
     //4. Thêm blog mới
     //POST : api/v1/admin/blogs
     @PostMapping("api/v1/admin/blogs")
-    public ResponseEntity<?> addBlog(UpsertBlogRequest request) {
+    public ResponseEntity<?> addBlog(@RequestBody UpsertBlogRequest request) {
         BlogPublic newBlog = blogService.addNewBlog(request);
         return ResponseEntity.ok().body(newBlog);
     }
@@ -58,7 +58,7 @@ public class BlogController {
     //5. Cập nhật blog
     //PUT : api/v1/admin/blogs/{id}
     @PutMapping("api/v1/admin/blogs/{id}")
-    public ResponseEntity<?> updateBlog(@PathVariable Integer id, UpsertBlogRequest request) {
+    public ResponseEntity<?> updateBlog(@PathVariable Integer id, @RequestBody UpsertBlogRequest request) {
         BlogPublic updatedBlog = blogService.updateBlog(id, request);
         return ResponseEntity.ok().body(updatedBlog);
     }
