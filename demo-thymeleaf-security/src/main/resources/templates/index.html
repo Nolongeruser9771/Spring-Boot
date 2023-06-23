@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -15,21 +15,30 @@
 
 <th:block sec:authorize="isAuthenticated()">
     <form th:action="@{/logout}" method="post">
-        <button>Đăng nhập</button>
+        <button>Đăng xuất</button>
     </form>
 </th:block>
 
 <h2>Hello: <span th:text="${#authentication.name}"></span></h2>
 
 <ul>
-    <li sec:authorize = "hasAnyRole('ADMIN','AUTHOR')">
-        <a th:href="@{/profile}">Profile Page</a>
+<!--    <li sec:authorize = "hasAnyRole('ADMIN','AUTHOR')">-->
+<!--        <a th:href="@{/profile}">Profile Page</a>-->
+<!--    </li>-->
+    <li>
+        <a th:href="@{/dashboard}">Xem Dashboard</a>
     </li>
-    <li sec:authorize = "hasAnyRole('ADMIN')">
-        <a th:href="@{/admin}">Admin Page</a>
+    <li>
+        <a th:href="@{/user-list}">Xem danh sách user</a>
     </li>
-    <li sec:authorize = "hasAnyRole('AUTHOR')">
-        <a th:href="@{/author}">Author Page</a>
+    <li>
+        <a th:href="@{/product-list}">Xem danh sách sản phẩm</a>
+    </li>
+    <li>
+        <a th:href="@{/post-list}">Xem danh sách bài viết</a>
+    </li>
+    <li>
+        <a th:href="@{/profile}">Xem thông tin cá nhân</a>
     </li>
 </ul>
 
