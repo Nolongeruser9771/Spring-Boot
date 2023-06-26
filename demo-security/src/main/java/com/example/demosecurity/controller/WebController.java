@@ -13,7 +13,7 @@ public class WebController {
     public String getHome() {
         return "index";
     }
-    
+
     @GetMapping("/login")
     public String getLoginPage(Authentication authentication) {
         //Kiểm tra thông tin trong context holder

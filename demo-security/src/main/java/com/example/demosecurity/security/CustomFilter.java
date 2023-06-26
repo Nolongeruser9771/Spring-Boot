@@ -29,6 +29,7 @@ public class CustomFilter extends OncePerRequestFilter {
         if(userEmail == null) {
             //chưa đăng nhập -> chuyển qua filter tiếp theo
             filterChain.doFilter(request, response);
+            return;
         }
 
         //Lấy thông tin user
