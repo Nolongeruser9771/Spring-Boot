@@ -1,6 +1,5 @@
 package com.example.blogbackend.controller;
 
-import com.example.blogbackend.dto.projection.BlogPublic;
 import com.example.blogbackend.dto.projection.CategoryPublic;
 import com.example.blogbackend.dto.projection.CategoryWebPublic;
 import com.example.blogbackend.request.UpsertCategoryRequest;
@@ -17,7 +16,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    //1.Lấy ds category (có phân trang, mặc định là pageSize = 10) (Phân trang bên phía client)
+    //1.Lấy ds category (có phân trang, mặc định là pageSize = 10)
     //GET : admin/categories?page={page}&pageSize={pageSize}
     @GetMapping("admin/categories")
     public String getCategoryList(@RequestParam(defaultValue = "1", required = false) Integer page,
