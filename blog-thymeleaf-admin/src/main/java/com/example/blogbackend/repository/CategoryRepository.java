@@ -1,5 +1,6 @@
 package com.example.blogbackend.repository;
 
+import com.example.blogbackend.dto.projection.CategoryPublic;
 import com.example.blogbackend.dto.projection.CategoryWebPublic;
 import com.example.blogbackend.entity.Category;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-    List<Category> findAll();
+    Page<CategoryPublic> findByOrderByNameDesc(Pageable pageable);
 
     Category findByName(String name);
 

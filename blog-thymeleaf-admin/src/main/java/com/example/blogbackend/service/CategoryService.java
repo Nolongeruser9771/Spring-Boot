@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,12 +26,10 @@ public class CategoryService {
     @Autowired
     private BlogRepository blogRepository;
 
-    //Danh sách Category phân trang (chia trang phía front end)
-    public List<CategoryPublic> getCategoryList(){
-        List<Category>  categoryList = categoryRepository.findAll();
-        return categoryList.stream()
-                .map(CategoryPublic::of)
-                .toList();
+    //Danh sách Category phân trang
+    public Page<CategoryPublic> getCategoryPage(Integer page, Integer pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return categoryRepository.findByOrderByNameDesc(pageable);
     }
 
     private void isCategoryNameDuplicated(String name){
@@ -46,7 +45,7 @@ public class CategoryService {
     }
     //Thêm category (tên không trùng nhau)
     @Transactional
-    public CategoryWebPublic addCategory(UpsertCategoryRequest request){
+    public CategoryPublic addCategory(UpsertCategoryRequest request){
         //category name duplicated?
         isCategoryNameDuplicated(request.getName());
 
@@ -54,7 +53,7 @@ public class CategoryService {
                 .name(request.getName())
                 .build();
         categoryRepository.save(newCategory);
-        return CategoryWebPublic.of(newCategory);
+        return CategoryPublic.of(newCategory);
     }
 
     //Cập nhật category (tên không trùng nhau)
@@ -77,7 +76,13 @@ public class CategoryService {
     //Xóa category (xóa blog áp dụng category, ko xóa blog trong bảng blog)
     @Transactional
     public void deleteCategory(Integer categoryId){
-        Category category2delete = findCategoryById(categoryId);
-        categoryRepository.delete(category2delete);
+        //find blog list
+        List<Blog> blogList = blogRepository.findByCategories_Id(categoryId);
+        if (blogList.size()!=0) {
+            throw new RuntimeException("Category is in use");
+        } else {
+            Category category2delete = findCategoryById(categoryId);
+            categoryRepository.delete(category2delete);
+        }
     }
 }
