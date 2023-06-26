@@ -34,10 +34,12 @@ public class ImageService {
 
         //tạo new Image -> lưu vào repo
         try {
-            return Image.builder()
+            Image image =  Image.builder()
                     .data(file.getBytes())
                     .type(file.getContentType())
                     .user(user).build();
+            imageRepository.save(image);
+            return image;
         }catch (IOException e) {
             throw new FileHandleException("Error when uploading image...");
         }
@@ -52,11 +54,10 @@ public class ImageService {
 
     //Lấy danh sách ảnh user đang login (fixed to 1) (getImagesByUserId)
     public List<Image> getImagesByUserId(Integer userId){
-        //Kiểm tra tồn tại userId hay không
+        //Kiểm tra tồn tại userId hay không (TH này ko cần do userId đã fix)
 
         //userId fixed to 1
-        List<Image> images = imageRepository.findByUser_IdOrderByCreatedAtDesc(1);
-        return images;
+        return imageRepository.findByUser_IdOrderByCreatedAtDesc(userId);
     }
 
     //Xóa ảnh (nếu ko phải ảnh của user upload -> không cho xóa)
