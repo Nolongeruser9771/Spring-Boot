@@ -29,7 +29,7 @@ public class ImageController {
     //2. Xem ảnh
     //GET : api/v1/files/{id}
     @GetMapping("api/v1/files/{id}")
-    public ResponseEntity<?> readImage(@PathVariable Integer id, MultipartFile file){
+    public ResponseEntity<?> readImage(@PathVariable Integer id){
         Image image = imageService.getImageById(id);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(image.getType()))
@@ -48,8 +48,8 @@ public class ImageController {
     //DELETE : api/v1/files/{id}
     @Transactional
     @DeleteMapping("api/v1/files/{id}")
-    public ResponseEntity<?> deleteImage(@PathVariable Integer fileId){
-        imageService.deleteImage(fileId);
+    public ResponseEntity<?> deleteImage(@PathVariable Integer id){
+        imageService.deleteImage(id);
         return ResponseEntity.noContent().build();
     }
 }
