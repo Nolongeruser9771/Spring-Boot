@@ -42,30 +42,28 @@ Trong đó:
 
 **2. Dựa vào hiểu biết của em. Hãy trình bày sơ lược về workflow xử lý trong Spring Security**
 
-![IMG_256](Aspose.Words.4f4c495d-7b45-4bbb-95e8-9aeaf297e5c9.001.png)
-
-1. User gửi thông tin login lên server (login request)
+1 - User gửi thông tin login lên server (login request)
 
 //Tạo đối tượng xác thực và tiến hành xác thực
 
-1. Đối tượng xác thực được tạo ra bằng constructor UsernamePasswordAuthenticationToken(email, password) với thông tin từ request của người dùng.
+2 - Đối tượng xác thực được tạo ra bằng constructor UsernamePasswordAuthenticationToken(email, password) với thông tin từ request của người dùng.
 
-1. Gọi phương thức tương ứng của AuthenticationManager với tham số đầu vào là UsernamePasswordAuthenticationToken (email, password) , để tiến hành xác thực. 
+3 - Gọi phương thức tương ứng của AuthenticationManager với tham số đầu vào là UsernamePasswordAuthenticationToken (email, password) , để tiến hành xác thực. 
 
-1. ` `AuthenticationProvider được tạo ra.
+4 -  AuthenticationProvider được tạo ra.
 
 //Từ bước 5-9 là các bước set chức năng cho provider
 
-1. Set chức năng so sánh và mã hóa mật khẩu cho AuthenticationProvider thông qua PasswordEncoder,
+5 - Set chức năng so sánh và mã hóa mật khẩu cho AuthenticationProvider thông qua PasswordEncoder,
 
-1. **7-8-9** Set chức năng tìm kiếm user thông qua email/username thông qua UserDetailsService; Class User triển khai interface UserDetails để cung cấp phương thức lấy thông tin user;
+6 - 7 - 8 - 9 Set chức năng tìm kiếm user thông qua email/username thông qua UserDetailsService; Class User triển khai interface UserDetails để cung cấp phương thức lấy thông tin user;
 
-10. Phương thức AuthenticationProvider sẽ được thêm vào filterChain để cung cấp pp xác thực username, password, tìm kiếm user. 
+10 - Phương thức AuthenticationProvider sẽ được thêm vào filterChain để cung cấp pp xác thực username, password, tìm kiếm user. 
 
-10. Nếu xác thực thành công, đối tượng xác thực sẽ được lưu vào Security Context Holder và sau đó lưu vào Session.
+11 - Nếu xác thực thành công, đối tượng xác thực sẽ được lưu vào Security Context Holder và sau đó lưu vào Session.
 
 //Tạo đối tượng phân quyền và xử lí phân quyền
 
-12. Bộ filter sẽ lấy thông tin email trong session, và tìm kiếm user thông qua class triển khai của UserDetailsService, tạo đối tượng phân quyền bằng UsernamePasswordAuthenticationToken(email, password, authorities) dựa trên thông tin trả về từ UserDetails.
+12 - Bộ filter sẽ lấy thông tin email trong session, và tìm kiếm user thông qua class triển khai của UserDetailsService, tạo đối tượng phân quyền bằng UsernamePasswordAuthenticationToken(email, password, authorities) dựa trên thông tin trả về từ UserDetails.
 
 Thông tin token sau đó được lưu vào security context holder và chuyển qua các filter tiếp theo. 
