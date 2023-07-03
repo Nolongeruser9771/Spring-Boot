@@ -107,6 +107,9 @@ public class WebController {
             }
         }
 
+        tokenConfirm.setConfirmedAt(LocalDateTime.now());
+        tokenConfirmRepository.save(tokenConfirm);
+
         model.addAttribute("isValid", true);
         model.addAttribute("message", "token hợp lệ");
         return "update-password";
