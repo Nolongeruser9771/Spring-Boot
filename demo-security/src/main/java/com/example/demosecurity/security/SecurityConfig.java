@@ -1,7 +1,6 @@
 package com.example.demosecurity.security;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -58,7 +57,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        String[] PUBLIC_ROUTE = {"/", "/api/v1/auth/**", "/login"};
+        String[] PUBLIC_ROUTE = {"/", "/api/v1/auth/**", "/login", "/forgot-password", "/api/send-email", "/swagger-ui.html",
+        "/doi-mat-khau/**"};
         http
                 .csrf(c -> c.disable()) //Disable bảo vệ trước tấn công ủy quyền
                 .authorizeHttpRequests((authz) -> authz
